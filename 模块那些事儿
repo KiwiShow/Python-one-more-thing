@@ -1,1 +1,23 @@
-模块那些事儿
+模块那些事儿 结合《Python参考手册》以及《Python基础教程》
+模块与import语句
+#spam.py
+a = 37
+def foo():
+    print "I'm foo and a is %s' %a
+def bar():
+    print "I'm bar and I'm calling foo'
+    foo()
+class Spam(object):
+    def grok(self):
+        print "I'm Spam.grok'
+        
+以模块形式首次用import加载这段代码的时候，有3件事要发生
+
+1.创建新的命名空间，将spam.py中定义的所有对象放置其中，在模块中定义的函数和方法在使用global语句时将访问该命名空间。
+2.在新创建的命名空间中执行模块中的代码
+3.在调用函数中创建名称来引用模块命名空间，这个名称==模块的名称，如下调用
+import spam          #加载并执行spam
+x = spam.a           #访问spam模块中名为a的成员
+spam.foo()           #调用spam模块中名为foo的函数   
+s = spam.Spam()      #创建spam.Spam()的一个实例
+s.grok()
