@@ -1,6 +1,9 @@
 #模块那些事儿 
 结合《Python参考手册》以及《Python基础教程》
+
+
 模块与import语句
+
 #spam.py
 a = 37
 def foo():
@@ -13,12 +16,21 @@ class Spam(object):
         print "I'm Spam.grok'
         
 以模块形式首次用import加载这段代码的时候，有3件事要发生
-
 1.创建新的命名空间，将spam.py中定义的所有对象放置其中，在模块中定义的函数和方法在使用global语句时将访问该命名空间。
 2.在新创建的命名空间中执行模块中的代码
 3.在调用函数中创建名称来引用模块命名空间，这个名称==模块的名称，如下调用
+
 import spam          #加载并执行spam
 x = spam.a           #访问spam模块中名为a的成员
 spam.foo()           #调用spam模块中名为foo的函数   
-s = spam.Spam()      #创建spam.Spam()的一个实例
+s = spam.Spam()      #创建spam.Spam()的一个实例，特别注意引用类的方式
 s.grok()
+
+导入多个模块
+import socket，os，re
+
+更改已导入模块的名称
+import spam as sp
+sp.foo()
+改名称的好处是对于编写可扩展的代码很有用。例如，需要导入的2个模块中都有一个read()的函数，在import之前需要if...elif 的判断，
+导入模块时将这2个模块都命名为reader，那么调用函数时只需要reader.read()即可。
