@@ -109,7 +109,33 @@ import加载的模块可分为4个类别：
 2.包含一组模块的包
 3.已被编译为共享库或DLL的C或C++扩展
 4.使用C编写并链接到Python解释器的内置模块
+解释器在每个目录下面搜索一下文件（对文件名称大小写敏感），按顺序
+1.目录foo， 它定义了一个包
+2.foo.pyd、fooo.so、foomodule.so、foomodule.dll(已编译的拓展)
+3.foo.pyo  #解释器中使用-o:删除行号、断言和其它调试信息的字节码  -oo:再删除文档字符串的字节码
+4.foo.pyc  #对应.py文件的编译后的字节码，并且对应具体的版本，可能不会通用
+5.foo.py(win中，Python还会查找.pyw)
 
 
-                 
+包
+包可以将一组模块汇聚到一个共同的包名称下，这个技巧有助于解决不同应用程序中使用的模块名称之间的命名空间冲突的问题。
+通过创建一个与包同名的目录，并在该目录中创建文件__init__.py就可以定义一个包。如果需要，可以将该目录中放入其它源文件or编译后的拓展or子包。
+
+Graphics为一个包，Primitive为一个子包，fill.py为子包中的模块
+那么有3种加载该模块的方法
+1.import Graphics.Primitive.fill  则该模块的内容必须显示命名调用 Graphics.Primitive.fill.floodfill(img,x,y,color)
+2.from Graphics.Primitive import fill 支持不带包前缀的形式使用它 fill.floodfill(img,x,y,color)
+3.from Graphics.Primitive.fill import floodfill  支持直接访问floodfill函数floodfill(img,x,y,color)
+
+注意这条语句from Graphics.Primitive import *  这条语句的本意是将Primitive子包下的所有模块都导入，但是，由于各个系统之间的文件名约定不同
+特别是大小写上面，最终，该语句导入Primitive目录的__init__.py文件中定义的所有函数，怎么定义，是用__all__ = ["",""]定义的。
+
+如果想从一个子模块中导入在同一目录下的另外一个子模块：2种方式  
+1.from Graphics.Primitive import lines   #这是完全限定名称
+2.from . import lines                    #这是包的相对导入
+
+如果想从一个子模块中导入在高一级目录子包下的另外一个子模块：from ..Primitive import lines
+包的相对导入只能使用这种形式：from module import symbol,其它的都是非法的。特别注意避免使用import module,因为只会从标准库中加载模块。
+但是，import Graphics语句会执行该目录下的__init__.py，只要该文件里面有 相对导入 同目录下的各种子模块，那么import Graphics就会加载这些子模块
+然后通过完全限定名称来使用它们。
                    
