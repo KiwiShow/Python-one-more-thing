@@ -138,4 +138,12 @@ Graphics为一个包，Primitive为一个子包，fill.py为子包中的模块
 包的相对导入只能使用这种形式：from module import symbol,其它的都是非法的。特别注意避免使用import module,因为只会从标准库中加载模块。
 但是，import Graphics语句会执行该目录下的__init__.py，只要该文件里面有 相对导入 同目录下的各种子模块，那么import Graphics就会加载这些子模块
 然后通过完全限定名称来使用它们。
-                   
+     
+如何具备探究模块的能力？
+探究模块最直接的方式就是在解释器中研究它们。使用一些函数或者变量如：
+dir():将对象的所有特性(以及模块的所有函数，类，变量等)列出。
+__all__:from module import * 会导入__all__中有的函数
+copy.copy.__doc__:显示的是在copy模块下copy函数定义中的文档字符串
+help(): 例如help(copy.copy)，比上述的文档字符串多一些内容如：函数参数
+文档：print range.__doc__ 非常详细
+使用源代码：真正理解Python语言，真正理解模块，阅读源代码，其实是学习Python最好的方式。去哪里找呢? sys.path  or  print copy.__file__
