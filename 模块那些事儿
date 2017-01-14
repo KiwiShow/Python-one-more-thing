@@ -81,3 +81,35 @@ print  a                        #"42"
 Python中的变量赋值不是一种存储操作，上例中对a的赋值不会将新值存储在a中并覆盖以前的值，
 而是将创建包含值42得新对象，并用名称a来引用它。此时a不在绑定到导入模块中的值，而是绑定到其它对象。
                    
+                   
+在模块中增加测试代码，（即将模块以主程序的形式执行）
+关键在于：如何“告知”模块本身是作为程序运行 or 导入其它。
+在解释器中，变量__name__的值为'__main__'。而在导入的模块中，这个值就被设定为模块的名字spam。
+所以用if __name__=='__main__': test()
+test()包含了测试代码，重新定义测试函数test()的好处是更加灵活，在模块被导入后也可以执行测试工作：spam.test()
+
+
+让你的模块能够被找到
+加载模块时，解释器搜索sys.path中的目录列表，并且按照列表顺序搜索
+['',   #表示当前正在使用的目录
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python27.zip',
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7', 
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin', 
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac', 
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages', 
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk', 
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old', 
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload', 
+'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages']
+可以在搜索列表中添加.egg文件，.egg文件是由setuptools库创建的包。在安装第三方Python库和扩展时会碰到的一种常见格式。
+.egg文件实际上只是添加了额外的元数据（如版本号，依赖关系等等）的.zip文件。
+
+import加载的模块可分为4个类别：
+1.使用Python编写的代码(.py文件)
+2.包含一组模块的包
+3.已被编译为共享库或DLL的C或C++扩展
+4.使用C编写并链接到Python解释器的内置模块
+
+
+                 
+                   
