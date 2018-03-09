@@ -14,24 +14,24 @@
 from multiprocessing import Pool
 import os, time, random
 
+
 def long_time_task(name):
-    print 'Run task %s (%s)...' % (name, os.getpid())
+    print('Run task %s (%s)...' % (name, os.getpid()))
     start = time.time()
     time.sleep(random.random() * 3)
     end = time.time()
-    print 'Task %s runs %0.2f seconds.' % (name, (end - start))
+    print('Task %s runs %0.2f seconds.' % (name, (end - start)))
 
-if __name__=='__main__':
-    print 'Parent process %s.' % os.getpid()
+
+if __name__ == '__main__':
+    print('Parent process %s.' % os.getpid())
     p = Pool()
-    #注意apply_async函数是异步执行，相当于for...in...中4个函数依次执行，但是执行下一个不需要等待上一个执行完
-    #又因为sleep的时间比较长，所以先输出了'waiting...'
+    # 注意apply_async函数是异步执行，相当于for...in...中4个函数依次执行，但是执行下一个不需要等待上一个执行完
+    # 又因为sleep的时间比较长，所以先输出了'waiting...'
     #
     for i in range(5):
         p.apply_async(long_time_task, args=(i,))
-    print 'Waiting for all subprocesses done...'
+    print('Waiting for all subprocesses done...')
     p.close()
     p.join()
-    print 'All subprocesses done.'		
-
-
+    print('All subprocesses done.')
